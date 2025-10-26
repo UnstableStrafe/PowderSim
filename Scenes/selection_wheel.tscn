@@ -1,0 +1,45 @@
+[gd_scene load_steps=8 format=3 uid="uid://bu123nikroai"]
+
+[ext_resource type="Script" uid="uid://hllxar7nbe3x" path="res://Scripts/selection_wheel.gd" id="1_w8kca"]
+[ext_resource type="Script" uid="uid://xat2u1mc0xln" path="res://Scripts/wheel_option.gd" id="2_5eg7p"]
+[ext_resource type="FontFile" uid="uid://cv1op4agcd8d4" path="res://Assets/Bitty.ttf" id="2_l5p0e"]
+
+[sub_resource type="Resource" id="Resource_l5p0e"]
+script = ExtResource("2_5eg7p")
+material_color = Color(0.972549, 0.93333334, 0.6666667, 1)
+material_name = "SAND"
+metadata/_custom_type_script = "uid://xat2u1mc0xln"
+
+[sub_resource type="Resource" id="Resource_a61fs"]
+script = ExtResource("2_5eg7p")
+material_color = Color(0.28235295, 0.24705882, 0.24705882, 1)
+material_name = "BEDROCK"
+metadata/_custom_type_script = "uid://xat2u1mc0xln"
+
+[sub_resource type="Resource" id="Resource_hux7u"]
+script = ExtResource("2_5eg7p")
+material_color = Color(0, 0.203125, 1, 1)
+material_name = "WATER"
+metadata/_custom_type_script = "uid://xat2u1mc0xln"
+
+[sub_resource type="Resource" id="Resource_ull34"]
+script = ExtResource("2_5eg7p")
+material_color = Color(0.42352942, 0.42352942, 0.42352942, 1)
+material_name = "STONE"
+metadata/_custom_type_script = "uid://xat2u1mc0xln"
+
+[node name="SelectionWheel" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w8kca")
+text_font = ExtResource("2_l5p0e")
+bg_color = Color(1, 1, 1, 0.78431374)
+outer_radius = 200
+inner_radius = 42
+entries = Array[ExtResource("2_5eg7p")]([SubResource("Resource_l5p0e"), SubResource("Resource_a61fs"), SubResource("Resource_hux7u"), SubResource("Resource_ull34")])

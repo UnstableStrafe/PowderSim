@@ -1,0 +1,83 @@
+[gd_scene load_steps=9 format=3 uid="uid://jo0joi6rflxc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cl2ul"]
+size = Vector2(9, 9)
+
+[sub_resource type="QuadMesh" id="QuadMesh_cl2ul"]
+size = Vector2(10, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_swu8w"]
+size = Vector2(5, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ja7v4"]
+size = Vector2(5, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f2rej"]
+size = Vector2(5, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ck4g2"]
+size = Vector2(5, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6v7r0"]
+size = Vector2(5, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3rpl4"]
+size = Vector2(5, 5)
+
+[node name="ParticleDust" type="Area2D"]
+collision_layer = 2
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_cl2ul")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="CollisionShape2D"]
+mesh = SubResource("QuadMesh_cl2ul")
+
+[node name="LeftDetector" type="Area2D" parent="."]
+position = Vector2(-10, 0)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftDetector"]
+shape = SubResource("RectangleShape2D_swu8w")
+
+[node name="RightDetector" type="Area2D" parent="."]
+position = Vector2(10, 0)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightDetector"]
+shape = SubResource("RectangleShape2D_ja7v4")
+
+[node name="TopDetector" type="Area2D" parent="."]
+position = Vector2(0, -10)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopDetector"]
+shape = SubResource("RectangleShape2D_f2rej")
+
+[node name="BottomDetector" type="Area2D" parent="."]
+position = Vector2(0, 10)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomDetector"]
+shape = SubResource("RectangleShape2D_ck4g2")
+
+[node name="BLDetector" type="Area2D" parent="."]
+position = Vector2(-10, 10)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BLDetector"]
+shape = SubResource("RectangleShape2D_6v7r0")
+
+[node name="BRDetector" type="Area2D" parent="."]
+position = Vector2(10, 10)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BRDetector"]
+shape = SubResource("RectangleShape2D_3rpl4")
