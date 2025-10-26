@@ -6,58 +6,54 @@ class_name World
 @onready var erase_cast: ShapeCast2D = $EraseCast
 @onready var tile_map_layer: TileMapLayer = $TileMapLayer
 
-@export var particle_dictionary : Dictionary[String, PackedScene]
-@export var current_material : String = "SAND"
+@export var particle_dictionary: Dictionary[String, PackedScene]
+@export var current_material: String = "SAND"
 
 #stored in tile coordinates. 
-var tile_layers_dictionary : Dictionary[int, IntArrayHolder] # key is the y-level, value is the x-coord values
+var tile_layers_dictionary: Dictionary[int, IntArrayHolder] # key is the y-level, value is the x-coord values
 
-var can_bulk_place : bool = true
-var can_bulk_erase : bool = false
-var is_bulk_place_held : bool = false
-var is_bulk_erase_held : bool = false
+var can_bulk_place: bool = true
+var can_bulk_erase: bool = false
+var is_bulk_place_held: bool = false
+var is_bulk_erase_held: bool = false
 
 func _ready() -> void:
 	current_mat_label.text = "Current Material: " + current_material.capitalize()
 	#register_layers()
 
 func register_layers() -> void:
-	var tile_array : Array[Vector2i] = tile_map_layer.get_used_cells()
+	var tile_array: Array[Vector2i] = tile_map_layer.get_used_cells()
 	
 	#to convert tile coords to particle coords, multiply by 10, then add 5
 	#to convert particle coords to tile coords, subtract 5, then divide by 10
 	
 	for i in tile_array:
-		var int_array : IntArrayHolder = tile_layers_dictionary.get_or_add(i.y, IntArrayHolder.new())
+		var int_array: IntArrayHolder = tile_layers_dictionary.get_or_add(i.y, IntArrayHolder.new())
 		int_array.array.append(i.x)
 
 	
-func convert_tile_coords_to_particle(tile_coords : Vector2i) -> Vector2:
-	var particle_coords = Vector2((tile_coords.x * 10) + 5, (tile_coords.y * 10) + 5)
-	return particle_coords
+func convert_tile_coords_to_particle(tile_coords: Vector2i) -> Vector2:
+	return to_global(tile_map_layer.map_to_local(tile_coords))
 
-func convert_particle_coords_to_tile(particle_coords : Vector2) -> Vector2i:
-	var tile_coords = Vector2i((particle_coords.x - 5) / 10, (particle_coords.y - 5) / 10)
-	return tile_coords
+func convert_particle_coords_to_tile(particle_coords: Vector2) -> Vector2i:
+	return tile_map_layer.local_to_map(to_local(particle_coords))
 
-func get_tile_data(coordinates : Vector2) -> Variant:
-	var tile_value : NullableBool = NullableBool.new()
+func get_tile_data(coordinates: Vector2) -> Variant:
+	var tile_value: NullableBool = NullableBool.new()
 	var tile_data = tile_map_layer.get_cell_tile_data(convert_particle_coords_to_tile(coordinates))
 	if tile_data:
 		tile_value.set_value_from_bool(tile_data.get_custom_data("empty"))
 	else:
 		tile_value.set_value(NullableBool.NBState.NULL)
-	return tile_value.get_value() #The a tile should never not have an "empty" data layer but better to be safe?
+	return tile_value.get_value() # The a tile should never not have an "empty" data layer but better to be safe?
 
-func mark_tile_as_empty(coordinates : Vector2):
-	var tile_data = tile_map_layer.get_cell_tile_data(convert_particle_coords_to_tile(coordinates))
-	if tile_data:
-		tile_data.set_custom_data("empty", true)
+func mark_tile_as_empty(coordinates: Vector2):
+	var tile_pos := convert_particle_coords_to_tile(coordinates)
+	tile_map_layer.set_cell(tile_pos, 1, Vector2i.ZERO)
 
-func mark_tile_as_occupied(coordinates : Vector2):
-	var tile_data = tile_map_layer.get_cell_tile_data(convert_particle_coords_to_tile(coordinates))
-	if tile_data:
-		tile_data.set_custom_data("empty", false)
+func mark_tile_as_occupied(coordinates: Vector2):
+	var tile_pos := convert_particle_coords_to_tile(coordinates)
+	tile_map_layer.set_cell(tile_pos, 2, Vector2i.ZERO)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -67,12 +63,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			if event.is_pressed():
 				is_bulk_place_held = true
-			else: 
+			else:
 				is_bulk_place_held = false
 	elif event.is_action_pressed("erase"):
 		erase_particle()
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if can_bulk_place == true:
 		if is_bulk_place_held == true:
 			place_particle()
@@ -101,7 +97,7 @@ func erase_particle() -> void:
 	var new_pos = Vector2(new_x, new_y)
 	
 	new_pos.x = clampf(new_pos.x, -get_viewport_rect().size.x / 2 + 5, get_viewport_rect().size.x / 2 - 5)
-	new_pos.y = clampf(new_pos.y,  -get_viewport_rect().size.y / 2 + 5, get_viewport_rect().size.y / 2 - 5)
+	new_pos.y = clampf(new_pos.y, -get_viewport_rect().size.y / 2 + 5, get_viewport_rect().size.y / 2 - 5)
 	erase_cast.position = new_pos
 	erase_cast.enabled = true
 	erase_cast.force_shapecast_update()
@@ -134,7 +130,7 @@ func place_particle() -> void:
 	var new_pos = Vector2(new_x, new_y)
 	
 	new_pos.x = clampf(new_pos.x, -get_viewport_rect().size.x / 2 + 5, get_viewport_rect().size.x / 2 - 5)
-	new_pos.y = clampf(new_pos.y,  -get_viewport_rect().size.y / 2 + 5, get_viewport_rect().size.y / 2 - 5)
+	new_pos.y = clampf(new_pos.y, -get_viewport_rect().size.y / 2 + 5, get_viewport_rect().size.y / 2 - 5)
 	
 	shape_cast.position = new_pos
 	shape_cast.enabled = true

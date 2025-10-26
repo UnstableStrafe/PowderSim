@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://cqtdxg6rpcuna"]
+[gd_scene load_steps=22 format=4 uid="uid://cqtdxg6rpcuna"]
 
 [ext_resource type="Script" uid="uid://jc353amj234f" path="res://world.gd" id="1_f3sb7"]
 [ext_resource type="PackedScene" uid="uid://bbck4qe1fg765" path="res://Scenes/Particles/particle_sand.tscn" id="2_fj7yv"]
@@ -41,16 +41,24 @@ size = Vector2(5, 5)
 size = Vector2(30, 30)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wse8f"]
+resource_name = "Border"
 texture = ExtResource("8_ioo17")
 texture_region_size = Vector2i(10, 10)
 0:0/0 = 0
 0:0/0/custom_data_1 = true
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ioo17"]
+resource_name = "Empty"
 texture = ExtResource("8_gbfbk")
 texture_region_size = Vector2i(10, 10)
 0:0/0 = 0
 0:0/0/custom_data_0 = true
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ic0uy"]
+resource_name = "Filled"
+texture = ExtResource("8_gbfbk")
+texture_region_size = Vector2i(10, 10)
+0:0/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_wse8f"]
 tile_size = Vector2i(10, 10)
@@ -60,6 +68,7 @@ custom_data_layer_1/name = "border"
 custom_data_layer_1/type = 1
 sources/1 = SubResource("TileSetAtlasSource_ioo17")
 sources/0 = SubResource("TileSetAtlasSource_wse8f")
+sources/2 = SubResource("TileSetAtlasSource_ic0uy")
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_f3sb7")
